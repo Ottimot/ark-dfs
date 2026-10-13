@@ -1,0 +1,10 @@
+chmod
+chown
+dd
+find
+kill
+mkfs
+mv
+rm
+sudo
+userdel

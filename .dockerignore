@@ -1,0 +1,23 @@
+# Merge with an existing .dockerignore rather than discarding project rules.
+.git
+**/.git
+**/target
+**/.venv
+**/__pycache__
+**/*.pyc
+
+# Runtime certificates, outputs and local configuration.
+/certs
+/files
+/measurments
+/measurments*
+/artifacts
+/metrics_*
+/measurements
+/logs
+/.ssh
+/.env
+/.env.*
+**/inst_folder/
+# Keep Java .class/.jar files, Merkle data, Cargo.lock, rust-toolchain.toml,
+# all Rust sources, and the local tokio-rustls / rustls-0.23.35 directories.

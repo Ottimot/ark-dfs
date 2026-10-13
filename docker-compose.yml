@@ -1,0 +1,151 @@
+services:
+
+  setup:
+    image: dfs-mpc:local
+    profiles: ["tools"]
+    working_dir: /app/app
+    entrypoint: ["/bin/bash", "/usr/local/bin/setup.sh"]
+    restart: "no"
+    volumes:
+      - ./docker/setup.sh:/usr/local/bin/setup.sh:ro
+      - ./examples/rss_snark/inst_folder:/app/app/inst_folder:rw
+      - ./artifacts/circuits:/circuits:rw
+
+  server:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    container_name: server_dfs
+    volumes:
+    - shared-certs:/certs
+    
+    cap_add:
+          - NET_ADMIN
+    networks:
+      default:
+        ipv4_address: 172.20.0.4
+
+  client:
+    environment:
+      RUN_ID: ${RUN_ID:-0}
+    build:
+      context: .
+      dockerfile: client.Dockerfile
+    container_name: client_dfs
+    cap_add:
+            - NET_ADMIN
+    volumes:
+      - shared-certs:/certs
+      - ./measurments_client:/app/measurments:rw
+      - ./artifacts/circuits:/app/files:ro
+    depends_on:
+      - server
+    networks:
+      default:
+        ipv4_address: 172.20.0.3
+    
+        
+  coordinator:
+    image: dfs-mpc:local
+    build:
+      context: .
+      dockerfile: worker.Dockerfile
+    container_name: coord_dfs
+    #cpuset: "0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60"
+    entrypoint: ["/usr/local/bin/coordinator-entrypoint.sh"]
+    cap_add:
+            - NET_ADMIN
+            - NET_RAW
+    sysctls:
+      net.ipv4.ip_forward: "1"
+    volumes:
+      - ./examples/rss_snark/inst_folder:/app/app/inst_folder:ro
+      - ./measurments:/app/app/measurments:rw
+      - ./artifacts/circuits:/app/app/circuits:ro
+    depends_on:
+      - worker1
+      - worker2
+      - worker3
+    networks:
+      default:
+        ipv4_address: 172.20.0.5
+    
+    #START ONLY AFTER WORK1 OPEN CONNECTION TO CLIENT FOR SHARES
+    #healthcheck:
+    #  test: ["CMD-SHELL", "nc -z 127.0.0.1 8220 || exit 1"]
+    #  interval: 2s
+    #  timeout: 5s
+    #  retries: 100
+    #  start_period: 5s
+
+  worker1:
+    image: dfs-mpc:local
+    container_name: work1_dfs
+    #cpuset: "1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61"
+    entrypoint: ["/usr/local/bin/worker-entrypoint.sh"]
+    volumes:
+      - ./examples/rss_snark/inst_folder:/app/app/inst_folder:ro
+      - ./measurments_work1:/app/app/measurments:rw
+    networks:
+      default:
+        ipv4_address: 172.20.0.6
+    #START ONLY AFTER WORK1 OPEN CONNECTION TO CLIENT FOR SHARES
+    #healthcheck:
+    #  test: ["CMD-SHELL", "nc -z 127.0.0.1 8221 || exit 1"]
+    #  interval: 2s
+    #  timeout: 5s
+    #  retries: 100
+    #  start_period: 5s
+
+  worker2:
+    image: dfs-mpc:local
+    container_name: work2_dfs
+    #cpuset: "2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62"
+    entrypoint: ["/usr/local/bin/worker-entrypoint.sh"]
+    volumes:
+      - ./examples/rss_snark/inst_folder:/app/app/inst_folder:ro
+      - ./measurments_work2:/app/app/measurments:rw
+    networks:
+      default:
+        ipv4_address: 172.20.0.7
+    #START ONLY AFTER WORK1 OPEN CONNECTION TO CLIENT FOR SHARES
+    #healthcheck:
+    #  test: ["CMD-SHELL", "nc -z 127.0.0.1 8222 || exit 1"]
+    #  interval: 2s
+    #  timeout: 5s
+    #  retries: 100
+    #  start_period: 5s
+
+  worker3:
+    image: dfs-mpc:local
+    container_name: work3_dfs
+    #cpuset: "3,7,11,15,19,23,27,31,35,39,43,47,51,55,59,63"
+    entrypoint: ["/usr/local/bin/worker-entrypoint.sh"]
+    volumes:
+      - ./examples/rss_snark/inst_folder:/app/app/inst_folder:ro
+      - ./measurments_work3:/app/app/measurments:rw
+    networks:
+      default:
+        ipv4_address: 172.20.0.8
+    #START ONLY AFTER WORK1 OPEN CONNECTION TO CLIENT FOR SHARES
+    #healthcheck:
+    #  test: ["CMD-SHELL", "nc -z 127.0.0.1 8223 || exit 1"]
+    #  interval: 2s
+    #  timeout: 5s
+    #  retries: 100
+    #  start_period: 5s
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  shared-certs:
+  inst-folder:
+  measurments:
+  measurments_work1:
+  measurments_work2:
+  measurments_work3:
+  measurments_client:

@@ -1,0 +1,1 @@
+mpirun -np 3 ../../target/release/examples/ass_snark work  --log-instance-size 10 --log-num-workers-per-party 0 --log-num-public-workers 1 --key-file inst_folder/inst_10_0_1/test --worker-id 0 --local 1

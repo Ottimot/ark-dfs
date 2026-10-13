@@ -1,0 +1,100 @@
+# Native build output, at every depth. Keep Cargo.lock.
+target/
+/debug/
+*.rs.bk
+*.o
+*.a
+*.so
+*.so.*
+*.dll
+*.dylib
+*.rlib
+*.rmeta
+*.exe
+
+# Local MPI deployment files; retain the Rust mpi dependency and src/mpi_*.
+/mpi/
+.ssh/
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+id_xmss*
+identity
+identity.*
+ssh_key*
+authorized_keys
+known_hosts
+*.pem
+*.key
+*.ppk
+*.p12
+*.pfx
+*.csr
+*.srl
+*.crt
+*.ext
+.env
+.env.*
+!.env.example
+
+# Parser is fetched from the Git dependency declared in Cargo.toml.
+/parser/
+
+# Generated circuits, witnesses, inputs and setup keys. No fixture exceptions.
+*.arith
+*.in
+*.pub.in
+*.r1cs
+**/inst_folder/
+/artifacts/circuits/
+
+# Captured traffic, TLS transcripts and runtime logs.
+*.pcap
+*.pcapng
+*.cap
+*.dump
+*.log
+handshake_dump*
+transcript*.txt
+simplified_transcript*.txt
+keylog*
+sslkeylog*
+/test_files/
+
+# Measurement data; keep measurement/capture program source.
+measurments*/
+measurements*/
+result/
+results/
+*.csv
+*.cvs
+metrics_*
+output_client*.json
+memory_client*.json
+cputime_client*.txt
+*.err
+*.out
+
+# Python/environment caches. Merkle-tree source and policy text stay.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Editors and backups.
+.vscode/
+.idea/
+.VSCodeCounter/
+.DS_Store
+*.swp
+*.bak
+.~lock.*
+
+# Private migration notes; public setup and policy live in README.md.
+/PUBLICATION_AUDIT.md
+/publication-file-inventory.tsv
+
+# Intentionally keep all xjsnark source, .class/.jar files and metadata for now:
+# some required circuits have no matching source in this checkout.
