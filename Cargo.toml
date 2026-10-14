@@ -64,7 +64,7 @@ ark-mnt6-753 = { version = "^0.4.0", default-features = false, features = ["r1cs
 ark-linear-sumcheck = {git = "https://github.com/huyuncong/sumcheck"}
 ark-test-curves = {git = "https://github.com/arkworks-rs/algebra"}
 ark-poly-commit = {git = "https://github.com/xjjj2/poly-commit"}
-parser = { git = "https://github.com/Ottimot/XJSNARK_to_ARK" }
+parser = { git = "https://github.com/Ottimot/ark-xjsnark" }
 
 
 [profile.release]
