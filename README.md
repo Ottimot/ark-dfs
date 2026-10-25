@@ -33,15 +33,13 @@ Internet access is needed for package/image downloads and Cargo Git dependencies
 Allow substantial RAM and disk space for the generated setup data, circuit,
 Docker images and build cache. Setup and simultaneous loading by three workers
 can be memory intensive. Ensure Docker has access to sufficient host resources.
-The simulation uses `172.20.0.0/16`; it must not conflict with another Docker
-network or host route. This configuration uses a local, rootful Docker daemon.
+The simulation uses `172.20.0.0/16`. This configuration uses a local, rootful Docker daemon.
 
 ## Install and set up
 
 Install Docker Engine, the Compose plugin and Buildx following the
 [official Docker Ubuntu installation instructions](https://docs.docker.com/engine/install/ubuntu/).
-Skip this if Docker is already installed. Rust, MPI, Java and ripgrep are
-installed inside the images.
+Skip this if Docker is already installed.
 
 From the repository root, build the images and run setup explicitly:
 
@@ -109,8 +107,7 @@ Each run writes client measurements under `measurments_client/`:
 - `memory_client1.json`: memory/CPU samples.
 - `cputime_client1.txt`: sampled client CPU time.
 
-Combined service logs are saved as `measurments/run_1.log`. The existing
-`measurments` spelling is intentional. Run IDs start at 1 on each invocation;
+Combined service logs are saved as `measurments/run_1.log`. Run IDs start at 1 on each invocation;
 copy results elsewhere before another invocation if you want to retain them.
 
 For additional worker/coordinator CSV metrics, install the optional host Python
@@ -145,9 +142,7 @@ container environment.
 
 Keep the bundled `xjsnark_decompiled/` and `input_generator/` Java classes.
 They run directly with the Java runtime installed in the images; rebuilding
-them from Java source is not required. Cargo uses the Git parser
-dependency from `Ottimot/XJSNARK_to_ARK` and the vendored `rustls-0.23.35/` and
-`tokio-rustls/` source trees. Keep those directories and `Cargo.lock`.
+them from Java source is not required.
 
 
 ## Attribution and license
